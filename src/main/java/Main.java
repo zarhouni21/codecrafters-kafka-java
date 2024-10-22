@@ -41,7 +41,6 @@ public class Main {
        var arr = new ByteArrayOutputStream() ;
        arr.write(correlation_id);
 
-
        int apiVersionDecoded = 0 ;
        for (byte b : apiVersion){
            apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
@@ -51,15 +50,20 @@ public class Main {
            arr.write(new byte[]{0,35});
        }
        else{
-           arr.write(new byte[]{0,0});
-           arr.write(apiKey);
-           arr.write(0);
+           arr.write(new byte[]{0,0}); //error_code => INT16
+           arr.write(apiKey); //api_key => INT16
+           arr.write(new byte[]{0,3}); // min_version => INT16
+           arr.write(new byte[]{0,4}); // max_version => INT16
+           arr.write(0) ; // tagged_fields
+           arr.write(new byte[]{0,0,0,0}); // throttle_time_ms => INT32
+           arr.write(0) ; // tagged_fields
+
        }
        int size = arr.size() ;
        byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
        byte[] res = arr.toByteArray() ;
 
-       
+
        OutputStream out = clientSocket.getOutputStream() ;
 
        out.write(respSize);
