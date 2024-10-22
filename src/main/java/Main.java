@@ -49,10 +49,27 @@ public class Main {
        }
        System.out.println("errorCode is:"+Arrays.toString(errorCode));
 
+       System.out.println("calculating the message length: ");
+
+       int messageLength = 0 ;
+       for(byte b : correlation_id){messageLength += b ; }
+       for(byte b : errorCode) { messageLength += b ; }
+       for(byte b : apiVersion) { messageLength +=b ;}
+
+       System.out.println(" the sum of response is :"+messageLength);
+
+       byte[] responseLength = new byte[] {0,0,0,0} ;
+       responseLength[0] = (byte) (messageLength >> 32) ;
+       responseLength[1] = (byte) (messageLength >> 16) ;
+       responseLength[2] = (byte) (messageLength >> 8) ;
+       responseLength[3] = (byte) (messageLength) ;
+
        OutputStream out = clientSocket.getOutputStream() ;
        System.out.println("writing to client");
+       out.write(responseLength);
        out.write(correlation_id);
        out.write(errorCode);
+       out.write(apiVersion);
 
        out.close() ;
        rawRequest.close();
