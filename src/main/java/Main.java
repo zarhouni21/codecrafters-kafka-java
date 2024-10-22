@@ -71,8 +71,8 @@ public class Main {
        out.write(errorCode);
        out.write(apiVersion);
 
-//       out.close() ;
-//       rawRequest.close();
+       out.close() ;
+       rawRequest.close();
 
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
