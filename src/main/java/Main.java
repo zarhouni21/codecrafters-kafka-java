@@ -52,7 +52,7 @@ public class Main {
              if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
                  arr.write(new byte[]{0,35});
                  arr.write(2); // array size + 2
-                 arr.write(apiKey); //api_key => INT16
+                 arr.write(new byte[]{0,2}); //api_key => INT16
                  arr.write(new byte[]{0,3}); // min_version => INT16
                  arr.write(new byte[]{0,4}); // max_version => INT16
                  arr.write(new byte[]{0}) ; // tagged_fields
@@ -73,7 +73,6 @@ public class Main {
              int size = arr.size() ;
              byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
              byte[] res = arr.toByteArray() ;
-
 
              OutputStream out = clientSocket.getOutputStream() ;
 
