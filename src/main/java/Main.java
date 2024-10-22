@@ -44,7 +44,11 @@ public class Main {
              for (byte b : apiVersion){
                  apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
              }
-             System.out.println(" The API version is " + apiVersionDecoded);
+             int cId = 0 ;
+             for (byte b : correlation_id){
+                 cId = (cId << 8 ) + (b & 0xFF) ;
+             }
+             System.out.println(" The C_ID version is " + cId);
              if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
                  arr.write(new byte[]{0,35});
                  arr.write(2); // array size + 2
