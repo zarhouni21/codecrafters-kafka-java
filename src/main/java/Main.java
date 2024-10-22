@@ -22,14 +22,12 @@ public class Main {
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
          clientSocket = serverSocket.accept();
-         while(clientSocket!=null){
-             System.out.println("entering thread !");
-             InputStream rawRequest = clientSocket.getInputStream() ;
+         InputStream rawRequest = clientSocket.getInputStream() ;
+         while(clientSocket!=null && rawRequest !=null){
              byte[] length = rawRequest.readNBytes(4) ;
              byte[] apiKey = rawRequest.readNBytes(2);
              byte[] apiVersion = rawRequest.readNBytes(2);
              byte[] correlation_id = rawRequest.readNBytes(4) ;
-             System.out.println("Thread: reading request was done!");
 
              System.out.println("the raw request contains : \nMessageLength :"+ Arrays.toString(length) +
                      ",\napiKey : "+Arrays.toString(apiKey)+
@@ -70,9 +68,10 @@ public class Main {
 
 
              out.flush() ;
-             rawRequest.close();
+             rawRequest = clientSocket.getInputStream() ;
              System.out.println("end of processing");
          }
+         rawRequest.close();
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
      } finally {
