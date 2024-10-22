@@ -21,9 +21,11 @@ public class Main {
          // ensures that we don't run into 'Address already in use' errors
          serverSocket.setReuseAddress(true);
          // Wait for connection from client.
+         InputStream rawRequest = null ;
          clientSocket = serverSocket.accept();
-         InputStream rawRequest = clientSocket.getInputStream() ;
-         while(clientSocket!=null){
+         boolean con = true ;
+         while(con){
+             rawRequest = clientSocket.getInputStream() ;
              System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
              byte[] length = rawRequest.readNBytes(4) ;
              byte[] apiKey = rawRequest.readNBytes(2);
@@ -66,10 +68,9 @@ public class Main {
 
              out.write(respSize);
              out.write(res);
-
-
              out.flush() ;
              System.out.println("end of processing");
+             if(rawRequest==null) con = false ;
          }
          rawRequest.close();
      } catch (IOException e) {
