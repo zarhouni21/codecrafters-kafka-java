@@ -66,7 +66,7 @@ public class Main {
 
        OutputStream out = clientSocket.getOutputStream() ;
 
-       out.write(new byte[]{0,0,0,0});
+       out.write(responseLength);
        out.write(new byte[]{0,0,0,0});
        out.write(new byte[]{0,0});
        out.write(new byte[]{0,0});
