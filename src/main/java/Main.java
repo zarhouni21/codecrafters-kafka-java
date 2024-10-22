@@ -2,6 +2,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 public class Main {
   public static void main(String[] args){
@@ -29,11 +30,19 @@ public class Main {
        byte[] apiVersion = rawRequest.readNBytes(2);
        byte[] correlation_id = rawRequest.readNBytes(4) ;
 
-       System.out.println("the raw request contains : "+length+apiKey+apiVersion+correlation_id);
+       int errorCode = 0 ;
+
+       System.out.println("the raw request contains : "+length.toString()+apiKey.toString()+apiVersion.toString()+correlation_id.toString());
+
+       int apiVersionDecoded = Integer.getInteger(apiVersion.toString()) ;
+       if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
+           errorCode = 35 ;
+       }
 
        OutputStream out = clientSocket.getOutputStream() ;
        out.write(new byte[]{0,0,0,0});
        out.write(correlation_id);
+       out.write(errorCode); 
 
        out.close() ;
        rawRequest.close();
