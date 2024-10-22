@@ -80,7 +80,7 @@ public class Main {
        out.write(res);
 
 
-       out.close() ;
+       out.flush() ;
        rawRequest.close();
          System.out.println("end of processing");
 
