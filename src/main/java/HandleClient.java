@@ -20,8 +20,6 @@ public class HandleClient extends Thread{
             byte[] apiVersion = rawRequest.readNBytes(2);
             byte[] correlation_id = rawRequest.readNBytes(4) ;
 
-            byte[] errorCode = new byte[] {0,0} ;
-
             System.out.println("the raw request contains : \nMessageLength :"+ Arrays.toString(length) +
                     ",\napiKey : "+Arrays.toString(apiKey)+
                     ",\napiVersion : "+Arrays.toString(apiVersion)+
