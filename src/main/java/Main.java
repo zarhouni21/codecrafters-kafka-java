@@ -73,6 +73,7 @@ public class Main {
 
        out.close() ;
        rawRequest.close();
+         System.out.println("end of processing");
 
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
