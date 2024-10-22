@@ -66,10 +66,10 @@ public class Main {
 
        OutputStream out = clientSocket.getOutputStream() ;
 
-       out.write(responseLength);
-       out.write(correlation_id);
-       out.write(errorCode);
-       out.write(apiVersion);
+       out.write(new byte[]{0,0,0,0});
+       out.write(new byte[]{0,0,0,0});
+       out.write(new byte[]{0,0});
+       out.write(new byte[]{0,0});
 
        out.close() ;
        rawRequest.close();
