@@ -37,6 +37,14 @@ public class HandleClient extends Thread{
             System.out.println(" the api version is " + apiVersionDecoded);
             if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
                 arr.write(new byte[]{0,35});
+                arr.write(new byte[]{0,0}); //error_code => INT16
+                arr.write(2); // array size + 2
+                arr.write(new byte[]{0,18}); //api_key => INT16
+                arr.write(new byte[]{0,3}); // min_version => INT16
+                arr.write(new byte[]{0,4}); // max_version => INT16
+                arr.write(new byte[]{0}) ; // tagged_fields
+                arr.write(new byte[]{0,0,0,0}); // throttle_time_ms => INT32
+                arr.write(new byte[]{0}) ; // tagged_fields
             }
             else{
                 arr.write(new byte[]{0,0}); //error_code => INT16
