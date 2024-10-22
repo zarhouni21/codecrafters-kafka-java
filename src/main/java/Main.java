@@ -65,14 +65,14 @@ public class Main {
        responseLength[3] = (byte) (messageLength) ;
 
        OutputStream out = clientSocket.getOutputStream() ;
-       System.out.println("writing to client");
+
        out.write(responseLength);
        out.write(correlation_id);
        out.write(errorCode);
        out.write(apiVersion);
 
-       out.close() ;
-       rawRequest.close();
+//       out.close() ;
+//       rawRequest.close();
 
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
