@@ -34,7 +34,10 @@ public class Main {
 
        System.out.println("the raw request contains : "+length.toString()+apiKey.toString()+apiVersion.toString()+correlation_id.toString());
 
-       int apiVersionDecoded = Integer.getInteger(apiVersion.toString()) ;
+       int apiVersionDecoded = 0 ;
+       for (byte b : apiVersion){
+           apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
+       }
        System.out.println(" the api version is " + apiVersionDecoded);
        if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
            errorCode = ((Integer) 35).byteValue() ;
