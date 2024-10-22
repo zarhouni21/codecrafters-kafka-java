@@ -14,11 +14,13 @@ public class HandleClient extends Thread{
     @Override
     public void run() {
         try {
+            System.out.println("entering thread !");
             InputStream rawRequest = clientSocket.getInputStream() ;
             byte[] length = rawRequest.readNBytes(4) ;
             byte[] apiKey = rawRequest.readNBytes(2);
             byte[] apiVersion = rawRequest.readNBytes(2);
             byte[] correlation_id = rawRequest.readNBytes(4) ;
+            System.out.println("Thread: reading request was done!");
 
             System.out.println("the raw request contains : \nMessageLength :"+ Arrays.toString(length) +
                     ",\napiKey : "+Arrays.toString(apiKey)+
