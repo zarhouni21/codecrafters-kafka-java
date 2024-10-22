@@ -33,7 +33,10 @@ public class Main {
 
        byte[] errorCode = new byte[] {0,0} ;
 
-       System.out.println("the raw request contains : "+length.toString()+apiKey.toString()+apiVersion.toString()+correlation_id.toString());
+       System.out.println("the raw request contains : MessageLength :"+Arrays.toString(length) +
+               ",\napiKey : "+Arrays.toString(apiKey)+
+               ",\napiVersion : "+Arrays.toString(apiVersion)+
+               ",\nCorrelationId : "+Arrays.toString(correlation_id));
 
        int apiVersionDecoded = 0 ;
        for (byte b : apiVersion){
