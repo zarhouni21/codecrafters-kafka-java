@@ -24,6 +24,7 @@ public class Main {
          clientSocket = serverSocket.accept();
          InputStream rawRequest = clientSocket.getInputStream() ;
          while(rawRequest !=null){
+             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
              byte[] length = rawRequest.readNBytes(4) ;
              byte[] apiKey = rawRequest.readNBytes(2);
              byte[] apiVersion = rawRequest.readNBytes(2);
