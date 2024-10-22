@@ -50,8 +50,7 @@ public class Main {
        System.out.println("errorCode is:"+Arrays.toString(errorCode));
 
        OutputStream out = clientSocket.getOutputStream() ;
-         System.out.println("writing to client");
-       out.write(length);
+       System.out.println("writing to client");
        out.write(correlation_id);
        out.write(errorCode);
 
