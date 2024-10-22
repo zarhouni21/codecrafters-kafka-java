@@ -1,3 +1,5 @@
+import WireProtocol.Request;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,12 +22,15 @@ public class Main {
        // Wait for connection from client.
        clientSocket = serverSocket.accept();
        OutputStream out = clientSocket.getOutputStream() ;
-       out.write(new byte[]{0,0,0,0});
-       out.write(new byte[]{0,0,0,7});
 
-       out.close() ;
        // read from teh client:
-       InputStream in = clientSocket.getInputStream() ;
+       ObjectInputStream rawRequest = new ObjectInputStream(clientSocket.getInputStream()) ;
+       byte correlationId = rawRequest.readByte();
+
+       out.write(new byte[]{0,0,0,0});
+       out.write(correlationId);
+       out.close() ;
+
 
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
