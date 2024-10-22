@@ -41,7 +41,7 @@ public class Main {
              for (byte b : apiVersion){
                  apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
              }
-             System.out.println(" the api version is " + apiVersionDecoded);
+             System.out.println(" The API version is " + apiVersionDecoded);
              if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
                  arr.write(new byte[]{0,35});
              }
