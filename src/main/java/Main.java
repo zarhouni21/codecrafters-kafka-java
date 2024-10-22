@@ -51,7 +51,8 @@ public class Main {
        }
        else{
            arr.write(new byte[]{0,0}); //error_code => INT16
-           arr.write(new byte[]{0,18}); //api_key => INT16
+           arr.write(2);
+           arr.write(apiKey); //api_key => INT16
            arr.write(new byte[]{0,3}); // min_version => INT16
            arr.write(new byte[]{0,4}); // max_version => INT16
            arr.write(new byte[]{0}) ; // tagged_fields
