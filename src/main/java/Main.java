@@ -23,7 +23,7 @@ public class Main {
          // Wait for connection from client.
          clientSocket = serverSocket.accept();
          InputStream rawRequest = clientSocket.getInputStream() ;
-         while(rawRequest !=null ||clientSocket!=null){
+         while(clientSocket!=null){
              System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
              byte[] length = rawRequest.readNBytes(4) ;
              byte[] apiKey = rawRequest.readNBytes(2);
