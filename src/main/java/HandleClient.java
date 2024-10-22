@@ -65,7 +65,7 @@ public class HandleClient extends Thread{
             System.out.println("end of processing");
         }
         catch(Exception e){
-            System.out.println("IOException: " + e.getMessage());
+            System.out.println("Thread : IOException: " + e.getMessage());
         }
         // read from the client:
 
