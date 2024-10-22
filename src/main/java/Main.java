@@ -1,4 +1,3 @@
-import WireProtocol.Request;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -21,19 +20,23 @@ public class Main {
        serverSocket.setReuseAddress(true);
        // Wait for connection from client.
        clientSocket = serverSocket.accept();
-       OutputStream out = clientSocket.getOutputStream() ;
 
-       // read from teh client:
+
+       // read from the client:
        InputStream rawRequest = clientSocket.getInputStream() ;
        byte[] length = rawRequest.readNBytes(4) ;
        byte[] apiKey = rawRequest.readNBytes(2);
        byte[] apiVersion = rawRequest.readNBytes(2);
        byte[] correlation_id = rawRequest.readNBytes(4) ;
 
+       System.out.println("the raw request contains : "+length+apiKey+apiVersion+correlation_id);
+
+       OutputStream out = clientSocket.getOutputStream() ;
        out.write(new byte[]{0,0,0,0});
        out.write(correlation_id);
 
-
+       out.close() ;
+       rawRequest.close();
 
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
