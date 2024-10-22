@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class Main {
   public static void main(String[] args){
@@ -30,7 +31,7 @@ public class Main {
        byte[] apiVersion = rawRequest.readNBytes(2);
        byte[] correlation_id = rawRequest.readNBytes(4) ;
 
-       byte[] errorCode = new byte[2] ;
+       byte[] errorCode = new byte[] {0,0} ;
 
        System.out.println("the raw request contains : "+length.toString()+apiKey.toString()+apiVersion.toString()+correlation_id.toString());
 
@@ -40,11 +41,10 @@ public class Main {
        }
        System.out.println(" the api version is " + apiVersionDecoded);
        if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
-           for (int i = 0 ; i< errorCode.length ; i++){
-               errorCode[i] = (byte) (35 & 0xFF) ;
-           }
+           errorCode[0] = (byte) (35 >> 8) ;
+           errorCode[1] = (byte) (35) ;
        }
-         System.out.println("errorCode is:"+errorCode);
+       System.out.println("errorCode is:"+Arrays.toString(errorCode));
 
        OutputStream out = clientSocket.getOutputStream() ;
        out.write(new byte[]{0,0,0,0});
