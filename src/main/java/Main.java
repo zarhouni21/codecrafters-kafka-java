@@ -38,18 +38,27 @@ public class Main {
                ",\napiVersion : "+Arrays.toString(apiVersion)+
                ",\nCorrelationId : "+Arrays.toString(correlation_id));
 
+       var arr = new ByteArrayOutputStream() ;
+       arr.write(correlation_id);
+
+
        int apiVersionDecoded = 0 ;
        for (byte b : apiVersion){
            apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
        }
        System.out.println(" the api version is " + apiVersionDecoded);
        if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
-           errorCode[0] = (byte) (35 >> 8) ;
-           errorCode[1] = (byte) (35) ;
+           arr.write(new byte[]{0,35});
        }
-       System.out.println("errorCode is:"+Arrays.toString(errorCode));
+       else{
+           arr.write(new byte[]{0,0});
+           arr.write(apiKey);
+           arr.write(0);
+       }
+       int size = arr.size() ;
+       byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
+       byte[] res = arr.toByteArray() ;
 
-       System.out.println("calculating the message length: ");
 
        int messageLength = 0 ;
        for(byte b : correlation_id){messageLength += b ; }
@@ -67,9 +76,9 @@ public class Main {
        OutputStream out = clientSocket.getOutputStream() ;
 
        out.write(responseLength);
-       out.write(new byte[]{0,0,0,0});
-       out.write(new byte[]{0,0});
-       out.write(new byte[]{0,0});
+       out.write(respSize);
+       out.write(res);
+
 
        out.close() ;
        rawRequest.close();
