@@ -68,7 +68,6 @@ public class Main {
 
 
              out.flush() ;
-             rawRequest = clientSocket.getInputStream() ;
              System.out.println("end of processing");
          }
          rawRequest.close();
