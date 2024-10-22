@@ -33,7 +33,7 @@ public class Main {
 
        byte[] errorCode = new byte[] {0,0} ;
 
-       System.out.println("the raw request contains : MessageLength :"+Arrays.toString(length) +
+       System.out.println("the raw request contains : \nMessageLength :"+Arrays.toString(length) +
                ",\napiKey : "+Arrays.toString(apiKey)+
                ",\napiVersion : "+Arrays.toString(apiVersion)+
                ",\nCorrelationId : "+Arrays.toString(correlation_id));
@@ -50,6 +50,7 @@ public class Main {
        System.out.println("errorCode is:"+Arrays.toString(errorCode));
 
        OutputStream out = clientSocket.getOutputStream() ;
+         System.out.println("writing to client");
        out.write(length);
        out.write(correlation_id);
        out.write(errorCode);
