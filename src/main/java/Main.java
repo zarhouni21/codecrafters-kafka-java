@@ -47,7 +47,7 @@ public class Main {
        System.out.println("errorCode is:"+Arrays.toString(errorCode));
 
        OutputStream out = clientSocket.getOutputStream() ;
-       out.write(new byte[]{0,0,0,0});
+       out.write(length);
        out.write(correlation_id);
        out.write(errorCode);
 
