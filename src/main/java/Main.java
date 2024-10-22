@@ -24,12 +24,15 @@ public class Main {
        OutputStream out = clientSocket.getOutputStream() ;
 
        // read from teh client:
-       ObjectInputStream rawRequest = new ObjectInputStream(clientSocket.getInputStream()) ;
-       byte correlationId = rawRequest.readByte();
+       InputStream rawRequest = clientSocket.getInputStream() ;
+       byte[] length = rawRequest.readNBytes(4) ;
+       byte[] apiKey = rawRequest.readNBytes(2);
+       byte[] apiVersion = rawRequest.readNBytes(2);
+       byte[] correlation_id = rawRequest.readNBytes(4) ;
 
        out.write(new byte[]{0,0,0,0});
-       out.write(correlationId);
-       out.close() ;
+       out.write(correlation_id);
+
 
 
      } catch (IOException e) {
