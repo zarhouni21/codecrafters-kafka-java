@@ -41,7 +41,7 @@ public class Main {
        System.out.println(" the api version is " + apiVersionDecoded);
        if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
            for (int i = 0 ; i< errorCode.length ; i++){
-               errorCode[errorCode.length  - i - 1] = (byte) (35 & 0xFF) ;
+               errorCode[i] = (byte) (35 & 0xFF) ;
            }
        }
          System.out.println("errorCode is:"+errorCode);
