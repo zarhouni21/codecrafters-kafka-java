@@ -35,7 +35,7 @@ public class Main {
           handleClient.run();
           while(in!=null){
 //              if(!AcceptRequest(in , client.getOutputStream())) break ;
-              createRequest(in , requests);
+              createRequest(in , handleClient);
           }
 //          createRequest(in , requests);
 //          for(ByteBuffer req : requests){
@@ -54,7 +54,6 @@ public class Main {
           var payload = rawRequest.readNBytes(length) ;
           client.addToList(ByteBuffer.allocate(length).put(payload).rewind());
           System.out.println("Data is added");
-          rawRequest.reset();
       }
   }
   private static void process(OutputStream out, ByteBuffer request) throws IOException {
