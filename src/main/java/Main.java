@@ -115,7 +115,7 @@ public class Main {
       try(Socket client = server.accept()){
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
-          OutputStream out = client.getOutputStream() ;
+          DataOutputStream out = new DataOutputStream(client.getOutputStream() );
           while(in!=null){
               handleRequest(in , out);
           }
@@ -125,7 +125,7 @@ public class Main {
       }
   }
 
-  public static void  handleRequest(InputStream in , OutputStream out){
+  public static void  handleRequest(InputStream in , DataOutputStream out){
       System.out.println("============== NEW REQUEST!! ============");
       try{
           DataInputStream dataIn = new DataInputStream(in) ;
