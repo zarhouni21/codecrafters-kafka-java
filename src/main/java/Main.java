@@ -95,20 +95,21 @@ public class Main {
                   ",\napiVersion : " + Arrays.toString(apiVersion) +
                   ",\nCorrelationId : " + Arrays.toString(correlation_id));
 
-          var arr = new ByteArrayOutputStream();
-          arr.write(correlation_id);
-
-          int apiVersionDecoded = 0;
-          for (byte b : apiVersion) {
-              apiVersionDecoded = (apiVersionDecoded << 8) + (b & 0xFF);
-          }
-          int cId = 0;
-          for (byte b : correlation_id) {
-              cId = (cId << 8) + (b & 0xFF);
-          }
-          System.out.println(" The C_ID version is " + cId);
           HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
           handleClient.run();
+
+//          var arr = new ByteArrayOutputStream();
+//          arr.write(correlation_id);
+//
+//          int apiVersionDecoded = 0;
+//          for (byte b : apiVersion) {
+//              apiVersionDecoded = (apiVersionDecoded << 8) + (b & 0xFF);
+//          }
+//          int cId = 0;
+//          for (byte b : correlation_id) {
+//              cId = (cId << 8) + (b & 0xFF);
+//          }
+//          System.out.println(" The C_ID version is " + cId);
 //          if (apiVersionDecoded <= -1 || apiVersionDecoded >= 5) {
 //              arr.write(new byte[]{0, 35});
 //              arr.write(2); // array size + 2

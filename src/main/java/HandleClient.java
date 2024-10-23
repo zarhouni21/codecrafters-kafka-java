@@ -78,7 +78,6 @@ public class HandleClient extends Thread{
         for (byte b : correlation_id) {
             cId = (cId << 8) + (b & 0xFF);
         }
-        System.out.println(" The C_ID version is " + cId);
         if (apiVersionDecoded <= -1 || apiVersionDecoded >= 5) {
             arr.write(new byte[]{0, 35});
             arr.write(2); // array size + 2
@@ -101,6 +100,7 @@ public class HandleClient extends Thread{
 
         }
         int size = arr.size();
+        System.out.println("size is : "+ size + ", and C_ID: " + cId);
         byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
         byte[] res = arr.toByteArray();
 
