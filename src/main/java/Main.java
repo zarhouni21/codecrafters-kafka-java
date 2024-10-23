@@ -108,7 +108,7 @@ public class Main {
 //         System.out.println("IOException: " + e.getMessage());
 //       }
      }
-  
+
 
 
   public static void handleConnection(ServerSocket server){
@@ -121,7 +121,7 @@ public class Main {
           }
       }
       catch(Exception e) {
-          System.out.println("Accepting connection failed : \n\t"+e.getMessage());
+          System.out.println("Accepting connection failed :( : \n\t"+e.getMessage());
       }
   }
 
