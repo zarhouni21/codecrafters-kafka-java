@@ -48,8 +48,46 @@ public class Main {
           System.out.println("the length of the request is : "+ length);
           var payload = rawRequest.readNBytes(length) ;
           list.add(ByteBuffer.allocate(length).put(payload).rewind());
+          System.out.println("Data is added");
+          rawRequest.reset();
       }
   }
+  private static void process(OutputStream out, ByteBuffer request) throws IOException {
+        var apiKey = request.getShort();     // request_api_key
+        var apiVersion = request.getShort(); // request_api_version
+        var correlationId = request.getInt();
+
+        short error = 0 ;
+        if(apiVersion<0 ||apiVersion>4){
+            error = 35 ;
+        }
+
+        short API_KEY = 18 ;
+        short MIN_VERSION = 3 ;
+        short MAX_VERSION = 4 ;
+        System.out.println("filling out the response. ");
+        ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(correlationId)
+                .putShort(error)
+                .put((byte) 2)
+                .putShort(API_KEY)
+                .putShort(MIN_VERSION)
+                .putShort(MAX_VERSION)
+                .put((byte) 0)
+                .putInt(0)
+                .put((byte) 0)
+                .flip() ;
+        byte[] res = new byte[buffer.remaining()] ;
+        buffer.get(res) ;
+
+        System.out.println("Sending out the response.");
+        System.out.println("response's size : " + res.length);
+        out.write(res.length);
+        out.write(res);
+        System.out.println("reponse was sent.");
+    }
+
+    ///============================
+
   public static Boolean AcceptRequest(InputStream rawRequest, OutputStream rawResponse) {
       try {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -164,39 +202,7 @@ public class Main {
         return  ByteBuffer.allocate(length).put(payload).rewind();
     }
 
-    private static void process(OutputStream out, ByteBuffer request) throws IOException {
-        var apiKey = request.getShort();     // request_api_key
-        var apiVersion = request.getShort(); // request_api_version
-        var correlationId = request.getInt();
 
-        short error = 0 ;
-        if(apiVersion<0 ||apiVersion>4){
-            error = 35 ;
-        }
-
-        short API_KEY = 18 ;
-        short MIN_VERSION = 3 ;
-        short MAX_VERSION = 4 ;
-        System.out.println("filling out the response. ");
-        ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(correlationId)
-                .putShort(error)
-                .put((byte) 2)
-                .putShort(API_KEY)
-                .putShort(MIN_VERSION)
-                .putShort(MAX_VERSION)
-                .put((byte) 0)
-                .putInt(0)
-                .put((byte) 0)
-                .flip() ;
-        byte[] res = new byte[buffer.remaining()] ;
-        buffer.get(res) ;
-
-        System.out.println("Sending out the response.");
-        System.out.println("response's size : " + res.length);
-        out.write(res.length);
-        out.write(res);
-        System.out.println("reponse was sent.");
-    }
 
     private static void respond(ByteBuffer response, OutputStream outputStream) throws IOException {
         outputStream.write(response.array());
