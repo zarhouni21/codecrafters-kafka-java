@@ -35,10 +35,10 @@ public class Main {
           List<HandleClient> handlers = new ArrayList<HandleClient>() ;
           while(in!=null){
               // create new Request Handler :
-              HandleClient handler = new HandleClient(in , client.getOutputStream()) ;
-//              handlers.add(handler) ;
-              handler.start();
-//              AcceptRequest(in , client.getOutputStream()) ;
+//              HandleClient handler = new HandleClient(in , client.getOutputStream()) ;
+////              handlers.add(handler) ;
+//              handler.start();
+              AcceptRequest(in , client.getOutputStream()) ;
           }
       }
       catch(Exception e) {
