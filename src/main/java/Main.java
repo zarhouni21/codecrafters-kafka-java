@@ -29,19 +29,9 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
 
-          HandleClient handleClient = new HandleClient(in , client.getOutputStream()) ;
-//          List<ByteBuffer> requests = handleClient.getWaitingList() ;
-//
-//          handleClient.run();
           while(in!=null){
               if(!AcceptRequest(in , client.getOutputStream())) break ;
-
           }
-//          createRequest(in , handleClient);
-//          createRequest(in , requests);
-//          for(ByteBuffer req : requests){
-//              process(client.getOutputStream() , req) ;
-//          }
           System.out.println("Client connection closed.");
       }
       catch(Exception e) {
@@ -118,34 +108,36 @@ public class Main {
               cId = (cId << 8) + (b & 0xFF);
           }
           System.out.println(" The C_ID version is " + cId);
-          if (apiVersionDecoded <= -1 || apiVersionDecoded >= 5) {
-              arr.write(new byte[]{0, 35});
-              arr.write(2); // array size + 2
-              arr.write(new byte[]{0, 2}); //api_key => INT16
-              arr.write(new byte[]{0, 3}); // min_version => INT16
-              arr.write(new byte[]{0, 4}); // max_version => INT16
-              arr.write(new byte[]{0}); // tagged_fields
-              arr.write(new byte[]{0, 0, 0, 0}); // throttle_time_ms => INT32
-              arr.write(new byte[]{0}); // tagged_fields
-          }
-          else {
-              arr.write(new byte[]{0, 0}); //error_code => INT16
-              arr.write(2); // array size + 2
-              arr.write(apiKey); //api_key => INT16
-              arr.write(new byte[]{0, 3}); // min_version => INT16
-              arr.write(new byte[]{0, 4}); // max_version => INT16
-              arr.write(new byte[]{0}); // tagged_fields
-              arr.write(new byte[]{0, 0, 0, 0}); // throttle_time_ms => INT32
-              arr.write(new byte[]{0}); // tagged_fields
-
-          }
-          int size = arr.size();
-          byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
-          byte[] res = arr.toByteArray();
-
-          rawResponse.write(respSize);
-          rawResponse.write(res);
-          System.out.println("end of processing");
+          HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
+          handleClient.run(); 
+//          if (apiVersionDecoded <= -1 || apiVersionDecoded >= 5) {
+//              arr.write(new byte[]{0, 35});
+//              arr.write(2); // array size + 2
+//              arr.write(new byte[]{0, 2}); //api_key => INT16
+//              arr.write(new byte[]{0, 3}); // min_version => INT16
+//              arr.write(new byte[]{0, 4}); // max_version => INT16
+//              arr.write(new byte[]{0}); // tagged_fields
+//              arr.write(new byte[]{0, 0, 0, 0}); // throttle_time_ms => INT32
+//              arr.write(new byte[]{0}); // tagged_fields
+//          }
+//          else {
+//              arr.write(new byte[]{0, 0}); //error_code => INT16
+//              arr.write(2); // array size + 2
+//              arr.write(apiKey); //api_key => INT16
+//              arr.write(new byte[]{0, 3}); // min_version => INT16
+//              arr.write(new byte[]{0, 4}); // max_version => INT16
+//              arr.write(new byte[]{0}); // tagged_fields
+//              arr.write(new byte[]{0, 0, 0, 0}); // throttle_time_ms => INT32
+//              arr.write(new byte[]{0}); // tagged_fields
+//
+//          }
+//          int size = arr.size();
+//          byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
+//          byte[] res = arr.toByteArray();
+//
+//          rawResponse.write(respSize);
+//          rawResponse.write(res);
+//          System.out.println("end of processing");
           return true ;
       } catch (IOException e) {
           System.out.println("Request handler, IOException: " + e.getMessage());
