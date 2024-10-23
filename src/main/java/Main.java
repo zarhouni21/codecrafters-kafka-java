@@ -164,7 +164,7 @@ public class Main {
         return  ByteBuffer.allocate(length).put(payload).rewind();
     }
 
-    private static void process(OutputStream out, ByteBuffer request) {
+    private static void process(OutputStream out, ByteBuffer request) throws IOException {
         var apiKey = request.getShort();     // request_api_key
         var apiVersion = request.getShort(); // request_api_version
         var correlationId = request.getInt();
