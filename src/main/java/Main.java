@@ -206,8 +206,6 @@ public class Main {
         return  ByteBuffer.allocate(length).put(payload).rewind();
     }
 
-
-
     private static void respond(ByteBuffer response, OutputStream outputStream) throws IOException {
         outputStream.write(response.array());
     }

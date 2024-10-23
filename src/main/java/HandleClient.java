@@ -98,8 +98,9 @@ public class HandleClient extends Thread{
         buffer.get(res) ;
 
         System.out.println("Sending out the response.");
-        System.out.println("response's size : " + res.length);
-        out.write(res.length);
+        int size = res.length ;
+        byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
+        out.write(respSize);
         out.write(res);
         System.out.println("reponse was sent.");
     }
