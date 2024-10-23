@@ -30,7 +30,7 @@ public class Main {
              rawResponse = clientSocket.getOutputStream() ;
              handleRequest(rawRequest , rawResponse);
              rawRequest.close();
-             rawResponse.close(); 
+             rawResponse.close();
 //
 //             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //             byte[] length = rawRequest.readNBytes(4) ;
@@ -103,6 +103,7 @@ public class Main {
   }
 
   public static void  handleRequest(InputStream in , OutputStream out){
+      System.out.println("============== NEW REQUEST!! ============");
       try{
           DataInputStream dataIn = new DataInputStream(in) ;
           int regLength = dataIn.readInt() ; // return the first 4 bytes, which include the length
@@ -110,6 +111,7 @@ public class Main {
           short apiKey = req.getShort() ;
           short apiVersion = req.getShort() ;
           int correlationId = req.getInt() ;
+          System.out.println("request data : \n"+"\t api key: "+apiKey+"\n\t api version: "+apiVersion+"\n\t correlation Identifier: "+correlationId+"\nend of request.");
           short error = 0  ;
 
           if(apiVersion<0 ||apiVersion>4){
@@ -119,6 +121,7 @@ public class Main {
           short API_KEY = 18 ;
           short MIN_VERSION = 3 ;
           short MAX_VERSION = 4 ;
+          System.out.println("filling out the response. ");
           ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(correlationId)
                   .putShort(error)
                   .put((byte) 2)
@@ -137,7 +140,7 @@ public class Main {
           out.write(res);
       }
       catch(Exception e){
-
+          System.out.println("IOException :" + e.getMessage());
       }
 
 
