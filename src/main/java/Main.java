@@ -47,12 +47,12 @@ public class Main {
           System.out.println("Connection Failed :( : \n\t"+e.getMessage());
       }
   }
-  public static void  createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
+  public static void  createRequest(InputStream rawRequest, HandleClient client) throws IOException{
       while (rawRequest!=null){
           int length = ByteBuffer.wrap(rawRequest.readNBytes(4)).getInt() ;
           System.out.println("the length of the request is : "+ length);
           var payload = rawRequest.readNBytes(length) ;
-          list.add(ByteBuffer.allocate(length).put(payload).rewind());
+          client.addToList(ByteBuffer.allocate(length).put(payload).rewind());
           System.out.println("Data is added");
           rawRequest.reset();
       }

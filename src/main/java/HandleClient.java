@@ -21,6 +21,9 @@ public class HandleClient extends Thread{
     public List<ByteBuffer> getWaitingList() {
         return waitingList;
     }
+    public void addToList(ByteBuffer buffer){
+        waitingList.add(buffer) ;
+    }
 
     @Override
     public void run() {
