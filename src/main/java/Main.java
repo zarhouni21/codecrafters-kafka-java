@@ -29,13 +29,14 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
           List<ByteBuffer> requests = new ArrayList<ByteBuffer>();
-//          while(true){
-//              if(!AcceptRequest(in , client.getOutputStream())) break ;
-//          }
-          createRequest(in , requests);
-          for(ByteBuffer req : requests){
-              process(client.getOutputStream() , req) ;
+          AcceptRequest(in , client.getOutputStream()
+          while(true){
+              if(!AcceptRequest(in , client.getOutputStream())) break ;
           }
+//          createRequest(in , requests);
+//          for(ByteBuffer req : requests){
+//              process(client.getOutputStream() , req) ;
+//          }
           System.out.println("Client connection closed.");
       }
       catch(Exception e) {
