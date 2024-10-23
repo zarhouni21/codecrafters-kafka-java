@@ -2,6 +2,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +28,13 @@ public class Main {
       try(Socket client = server.accept()){
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
-          while(true){
-              if(!AcceptRequest(in , client.getOutputStream())) break ;
+          List<ByteBuffer> requests = new ArrayList<ByteBuffer>();
+//          while(true){
+//              if(!AcceptRequest(in , client.getOutputStream())) break ;
+//          }
+          createRequest(in , requests);
+          for(ByteBuffer req : requests){
+              process(client.getOutputStream() , req) ;
           }
           System.out.println("Client connection closed.");
       }
@@ -36,7 +42,14 @@ public class Main {
           System.out.println("Accepting connection failed :( : \n\t"+e.getMessage());
       }
   }
-
+  public static void createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
+      while (rawRequest!=null){
+          int length = ByteBuffer.wrap(rawRequest.readNBytes(4)).getInt() ;
+          System.out.println("the length of the request is : "+ length);
+          var payload = rawRequest.readNBytes(length) ;
+          list.add(ByteBuffer.allocate(length).put(payload).rewind());
+      }
+  }
   public static Boolean AcceptRequest(InputStream rawRequest, OutputStream rawResponse) {
       try {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -151,7 +164,7 @@ public class Main {
         return  ByteBuffer.allocate(length).put(payload).rewind();
     }
 
-    private static ByteBuffer process(ByteBuffer request) {
+    private static void process(OutputStream out, ByteBuffer request) {
         var apiKey = request.getShort();     // request_api_key
         var apiVersion = request.getShort(); // request_api_version
         var correlationId = request.getInt();
@@ -175,8 +188,14 @@ public class Main {
                 .putInt(0)
                 .put((byte) 0)
                 .flip() ;
+        byte[] res = new byte[buffer.remaining()] ;
+        buffer.get(res) ;
 
-        return buffer ;
+        System.out.println("Sending out the response.");
+        System.out.println("response's size : " + res.length);
+        out.write(res.length);
+        out.write(res);
+        System.out.println("reponse was sent.");
     }
 
     private static void respond(ByteBuffer response, OutputStream outputStream) throws IOException {
