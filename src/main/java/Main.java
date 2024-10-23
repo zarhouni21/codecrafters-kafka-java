@@ -135,12 +135,12 @@ public class Main {
 
           byte[] res = new byte[buffer.remaining()] ;
           buffer.get(res) ;
-
+          System.out.println("Sending out the response.");
           out.write(res.length);
           out.write(res);
       }
       catch(Exception e){
-          System.out.println("IOException :" + e.getMessage());
+          System.out.println("Handler, IOException :" + e.getMessage());
       }
 
 
