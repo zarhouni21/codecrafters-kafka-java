@@ -91,7 +91,6 @@ public class Main {
 
           rawResponse.write(respSize);
           rawResponse.write(res);
-          rawResponse.flush();
           System.out.println("end of processing");
           return true ;
       } catch (IOException e) {
