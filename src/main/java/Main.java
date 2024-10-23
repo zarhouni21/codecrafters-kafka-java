@@ -116,7 +116,7 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
           OutputStream out = client.getOutputStream() ;
-          while(true){
+          while(in!=null){
               handleRequest(in , out);
           }
       }
