@@ -28,7 +28,8 @@ public class Main {
       try(Socket client = server.accept()){
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
-          List<ByteBuffer> requests = new ArrayList<ByteBuffer>();
+//          List<ByteBuffer> requests = new ArrayList<ByteBuffer>();
+          AcceptRequest(in , client.getOutputStream() );
           AcceptRequest(in , client.getOutputStream() );
           while(true){
               if(!AcceptRequest(in , client.getOutputStream())) break ;
