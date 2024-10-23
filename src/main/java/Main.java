@@ -30,7 +30,7 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
           DataOutputStream out = new DataOutputStream(client.getOutputStream() );
-          while(in!=null){
+          while(client!=null){
               AcceptRequest(in , client.getOutputStream()) ;
           }
       }
@@ -94,7 +94,7 @@ public class Main {
           rawResponse.flush();
           System.out.println("end of processing");
       } catch (IOException e) {
-          System.out.println("IOException: " + e.getMessage());
+          System.out.println("Request handler, IOException: " + e.getMessage());
 
       }
   }
