@@ -23,7 +23,6 @@ public class HandleClient extends Thread{
 
     @Override
     public void run() {
-        System.out.println("============== NEW REQUEST!! ============");
         try{
             process();
         }
@@ -107,7 +106,7 @@ public class HandleClient extends Thread{
 
         this.out.write(respSize);
         this.out.write(res);
-        System.out.println("end of processing");
+        System.out.println("end of Thread.");
     }
 
 }
