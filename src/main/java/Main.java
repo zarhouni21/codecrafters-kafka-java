@@ -31,7 +31,7 @@ public class Main {
 
           HandleClient handleClient = new HandleClient(in , client.getOutputStream() , new ArrayList<ByteBuffer>()) ;
           List<ByteBuffer> requests = handleClient.getWaitingList() ;
-          handleClient.run(); 
+          handleClient.run();
           while(in!=null){
 //              if(!AcceptRequest(in , client.getOutputStream())) break ;
               createRequest(in , requests);
@@ -46,7 +46,7 @@ public class Main {
           System.out.println("Connection Failed :( : \n\t"+e.getMessage());
       }
   }
-  public static void createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
+  public static synchronized void  createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
       while (rawRequest!=null){
           int length = ByteBuffer.wrap(rawRequest.readNBytes(4)).getInt() ;
           System.out.println("the length of the request is : "+ length);
