@@ -29,16 +29,25 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
 //          List<ByteBuffer> requests = new ArrayList<ByteBuffer>();
-          AcceptRequest(in , client.getOutputStream() );
-          AcceptRequest(in , client.getOutputStream() );
+//          AcceptRequest(in , client.getOutputStream() );
+//          AcceptRequest(in , client.getOutputStream() );
           while(true){
-              if(!AcceptRequest(in , client.getOutputStream())) break ;
+              byte[] length = in.readNBytes(4);
+              byte[] apiKey = in.readNBytes(2);
+              byte[] apiVersion = in.readNBytes(2);
+              byte[] correlation_id = in.readNBytes(4);
+
+              System.out.println("the raw request contains : \nMessageLength :" + Arrays.toString(length) +
+                      ",\napiKey : " + Arrays.toString(apiKey) +
+                      ",\napiVersion : " + Arrays.toString(apiVersion) +
+                      ",\nCorrelationId : " + Arrays.toString(correlation_id));
+//              if(!AcceptRequest(in , client.getOutputStream())) break ;
           }
 //          createRequest(in , requests);
 //          for(ByteBuffer req : requests){
 //              process(client.getOutputStream() , req) ;
 //          }
-          System.out.println("Client connection closed.");
+//          System.out.println("Client connection closed.");
       }
       catch(Exception e) {
           System.out.println("Accepting connection failed :( : \n\t"+e.getMessage());
