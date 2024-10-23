@@ -9,11 +9,7 @@ import java.util.List;
 
 public class Main {
   public static void main(String[] args){
-    // You can use print statements as follows for debugging, they'll be visible when running tests.
     System.err.println("Logs from your program will appear here!");
-
-    // Uncomment this block to pass the first stage
-    // 
      ServerSocket serverSocket = null;
      int port = 9092;
      try{
@@ -33,20 +29,17 @@ public class Main {
           InputStream in = client.getInputStream() ;
           DataOutputStream out = new DataOutputStream(client.getOutputStream() );
           List<HandleClient> handlers = new ArrayList<HandleClient>() ;
-          while(in!=null){
-              // create new Request Handler :
-//              HandleClient handler = new HandleClient(in , client.getOutputStream()) ;
-////              handlers.add(handler) ;
-//              handler.start();
-              AcceptRequest(in , client.getOutputStream()) ;
+          while(true){
+              if(!AcceptRequest(in , client.getOutputStream())) break ;
           }
+          System.out.println("Client connection closed.");
       }
       catch(Exception e) {
           System.out.println("Accepting connection failed :( : \n\t"+e.getMessage());
       }
   }
 
-  public static void AcceptRequest(InputStream rawRequest, OutputStream rawResponse) {
+  public static Boolean AcceptRequest(InputStream rawRequest, OutputStream rawResponse) {
       try {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           byte[] length = rawRequest.readNBytes(4);
@@ -100,9 +93,10 @@ public class Main {
           rawResponse.write(res);
           rawResponse.flush();
           System.out.println("end of processing");
+          return true ;
       } catch (IOException e) {
           System.out.println("Request handler, IOException: " + e.getMessage());
-
+          return false ;
       }
   }
   public static void  handleRequest(InputStream in , DataOutputStream out){
