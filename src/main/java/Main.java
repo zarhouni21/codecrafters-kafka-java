@@ -107,7 +107,7 @@ public class Main {
       try{
           DataInputStream dataIn = new DataInputStream(in) ;
           int regLength = dataIn.readInt() ; // return the first 4 bytes, which include the length
-          ByteBuffer req = ByteBuffer.allocate(regLength).put(dataIn.readAllBytes()).rewind() ;
+          ByteBuffer req = ByteBuffer.allocate(regLength).put(dataIn.readNBytes(regLength)).rewind() ;
           short apiKey = req.getShort() ;
           short apiVersion = req.getShort() ;
           int correlationId = req.getInt() ;
