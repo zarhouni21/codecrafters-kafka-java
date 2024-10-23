@@ -80,7 +80,6 @@ public class Main {
              out.write(res);
              out.flush() ;
              System.out.println("end of processing");
-             if(rawRequest==null) con = false ;
          }
          rawRequest.close();
      } catch (IOException e) {
@@ -96,4 +95,6 @@ public class Main {
        }
      }
   }
+
+
 }
