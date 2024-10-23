@@ -68,7 +68,6 @@ public class HandleClient extends Thread{
     }
 
     private void process()  throws Exception{
-        wait(2000);
         var arr = new ByteArrayOutputStream();
         arr.write(this.correlation_id);
 
