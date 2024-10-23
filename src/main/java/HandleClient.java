@@ -32,7 +32,7 @@ public class HandleClient extends Thread{
         }
     }
 
-    private synchronized void process(OutputStream out, ByteBuffer request) throws IOException {
+    private void process(OutputStream out, ByteBuffer request) throws IOException {
         var apiKey = request.getShort();     // request_api_key
         var apiVersion = request.getShort(); // request_api_version
         var correlationId = request.getInt();
@@ -67,7 +67,8 @@ public class HandleClient extends Thread{
         System.out.println("reponse was sent.");
     }
 
-    private void process()  throws IOException{
+    private synchronized void process()  throws Exception{
+        wait(2000);
         var arr = new ByteArrayOutputStream();
         arr.write(this.correlation_id);
 
