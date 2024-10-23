@@ -29,8 +29,9 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
 
-          HandleClient handleClient = new HandleClient(in , client.getOutputStream() , new ArrayList<ByteBuffer>()) ;
+          HandleClient handleClient = new HandleClient(in , client.getOutputStream()) ;
           List<ByteBuffer> requests = handleClient.getWaitingList() ;
+
           handleClient.run();
           while(in!=null){
 //              if(!AcceptRequest(in , client.getOutputStream())) break ;
@@ -46,7 +47,7 @@ public class Main {
           System.out.println("Connection Failed :( : \n\t"+e.getMessage());
       }
   }
-  public static synchronized void  createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
+  public static void  createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
       while (rawRequest!=null){
           int length = ByteBuffer.wrap(rawRequest.readNBytes(4)).getInt() ;
           System.out.println("the length of the request is : "+ length);

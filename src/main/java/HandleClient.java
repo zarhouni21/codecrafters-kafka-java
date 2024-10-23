@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class HandleClient extends Thread{
 
     List<ByteBuffer> waitingList ;
 
-    public HandleClient(InputStream in , OutputStream out , List<ByteBuffer> list){
+    public HandleClient(InputStream in , OutputStream out){
         this.in = in ; 
         this.out = out ;
-        waitingList = list ;
+        waitingList = new ArrayList<ByteBuffer>();
     }
 
     public List<ByteBuffer> getWaitingList() {
