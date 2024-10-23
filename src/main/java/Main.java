@@ -136,8 +136,10 @@ public class Main {
           byte[] res = new byte[buffer.remaining()] ;
           buffer.get(res) ;
           System.out.println("Sending out the response.");
+          System.out.println("response's size : " + res.length);
           out.write(res.length);
           out.write(res);
+          System.out.println("reponse was sent.");
       }
       catch(Exception e){
           System.out.println("Handler, IOException :" + e.getMessage());
