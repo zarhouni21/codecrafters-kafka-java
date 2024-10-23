@@ -3,7 +3,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
   public static void main(String[] args){
@@ -30,8 +32,13 @@ public class Main {
           System.out.println("new connection have been made.");
           InputStream in = client.getInputStream() ;
           DataOutputStream out = new DataOutputStream(client.getOutputStream() );
+          List<HandleClient> handlers = new ArrayList<HandleClient>() ;
           while(client!=null){
-              AcceptRequest(in , client.getOutputStream()) ;
+              // create new Request Handler :
+              HandleClient handler = new HandleClient(in , out) ;
+              handlers.add(handler) ;
+              handler.start(); 
+//              AcceptRequest(in , client.getOutputStream()) ;
           }
       }
       catch(Exception e) {
@@ -145,5 +152,44 @@ public class Main {
 
 
   }
+
+    public static ByteBuffer processRequest(InputStream input) throws  IOException{
+        int length = ByteBuffer.wrap(input.readNBytes(4)).getInt() ;
+        System.out.println("the length of the request is : "+ length);
+        var payload = input.readNBytes(length) ;
+        return  ByteBuffer.allocate(length).put(payload).rewind();
+    }
+
+    private static ByteBuffer process(ByteBuffer request) {
+        var apiKey = request.getShort();     // request_api_key
+        var apiVersion = request.getShort(); // request_api_version
+        var correlationId = request.getInt();
+
+        short error = 0 ;
+        if(apiVersion<0 ||apiVersion>4){
+            error = 35 ;
+        }
+
+        short API_KEY = 18 ;
+        short MIN_VERSION = 3 ;
+        short MAX_VERSION = 4 ;
+        System.out.println("filling out the response. ");
+        ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(correlationId)
+                .putShort(error)
+                .put((byte) 2)
+                .putShort(API_KEY)
+                .putShort(MIN_VERSION)
+                .putShort(MAX_VERSION)
+                .put((byte) 0)
+                .putInt(0)
+                .put((byte) 0)
+                .flip() ;
+
+        return buffer ;
+    }
+
+    private static void respond(ByteBuffer response, OutputStream outputStream) throws IOException {
+        outputStream.write(response.array());
+    }
 
 }

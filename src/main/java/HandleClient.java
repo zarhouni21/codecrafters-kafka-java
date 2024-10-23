@@ -1,4 +1,5 @@
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -6,77 +7,57 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class HandleClient extends Thread{
-    Socket clientSocket ;
+    InputStream in ; 
+    OutputStream out ;
 
-    public HandleClient(Socket socket){
-        clientSocket = socket ;
+    public HandleClient(InputStream in , OutputStream out){
+        this.in = in ; 
+        this.out = out ; 
     }
     @Override
     public void run() {
-        try {
-            System.out.println("entering thread !");
-            InputStream rawRequest = clientSocket.getInputStream() ;
-            byte[] length = rawRequest.readNBytes(4) ;
-            byte[] apiKey = rawRequest.readNBytes(2);
-            byte[] apiVersion = rawRequest.readNBytes(2);
-            byte[] correlation_id = rawRequest.readNBytes(4) ;
-            System.out.println("Thread: reading request was done!");
+        System.out.println("============== NEW REQUEST!! ============");
+        try{
+            DataInputStream dataIn = new DataInputStream(in) ;
+            int regLength = dataIn.readInt() ; // return the first 4 bytes, which include the length
+            ByteBuffer req = ByteBuffer.allocate(regLength).put(dataIn.readNBytes(regLength)).rewind() ;
+            short apiKey = req.getShort() ;
+            short apiVersion = req.getShort() ;
+            int correlationId = req.getInt() ;
+            System.out.println("request data : \n"+"\t api key: "+apiKey+"\n\t api version: "+apiVersion+"\n\t correlation Identifier: "+correlationId+"\nend of request.");
+            short error = 0  ;
 
-            System.out.println("the raw request contains : \nMessageLength :"+ Arrays.toString(length) +
-                    ",\napiKey : "+Arrays.toString(apiKey)+
-                    ",\napiVersion : "+Arrays.toString(apiVersion)+
-                    ",\nCorrelationId : "+Arrays.toString(correlation_id));
-
-            var arr = new ByteArrayOutputStream() ;
-            arr.write(correlation_id);
-
-            int apiVersionDecoded = 0 ;
-            for (byte b : apiVersion){
-                apiVersionDecoded = (apiVersionDecoded << 8 ) + (b & 0xFF) ;
+            if(apiVersion<0 ||apiVersion>4){
+                error = 35 ;
             }
-            System.out.println(" the api version is " + apiVersionDecoded);
-            if(apiVersionDecoded<=-1 ||apiVersionDecoded>=5 ) {
-                arr.write(new byte[]{0,35});
-                arr.write(new byte[]{0,0}); //error_code => INT16
-                arr.write(2); // array size + 2
-                arr.write(new byte[]{0,18}); //api_key => INT16
-                arr.write(new byte[]{0,3}); // min_version => INT16
-                arr.write(new byte[]{0,4}); // max_version => INT16
-                arr.write(new byte[]{0}) ; // tagged_fields
-                arr.write(new byte[]{0,0,0,0}); // throttle_time_ms => INT32
-                arr.write(new byte[]{0}) ; // tagged_fields
-            }
-            else{
-                arr.write(new byte[]{0,0}); //error_code => INT16
-                arr.write(2); // array size + 2
-                arr.write(apiKey); //api_key => INT16
-                arr.write(new byte[]{0,3}); // min_version => INT16
-                arr.write(new byte[]{0,4}); // max_version => INT16
-                arr.write(new byte[]{0}) ; // tagged_fields
-                arr.write(new byte[]{0,0,0,0}); // throttle_time_ms => INT32
-                arr.write(new byte[]{0}) ; // tagged_fields
 
-            }
-            int size = arr.size() ;
-            byte[] respSize = ByteBuffer.allocate(4).putInt(size).array();
-            byte[] res = arr.toByteArray() ;
+            short API_KEY = 18 ;
+            short MIN_VERSION = 3 ;
+            short MAX_VERSION = 4 ;
+            System.out.println("filling out the response. ");
+            ByteBuffer buffer = ByteBuffer.allocate(1024).putInt(correlationId)
+                    .putShort(error)
+                    .put((byte) 2)
+                    .putShort(API_KEY)
+                    .putShort(MIN_VERSION)
+                    .putShort(MAX_VERSION)
+                    .put((byte) 0)
+                    .putInt(0)
+                    .put((byte) 0)
+                    .flip() ;
 
+            byte[] res = new byte[buffer.remaining()] ;
+            buffer.get(res) ;
 
-            OutputStream out = clientSocket.getOutputStream() ;
-
-            out.write(respSize);
+            System.out.println("Sending out the response.");
+            System.out.println("response's size : " + res.length);
+            out.write(res.length);
             out.write(res);
-
-
-            out.flush() ;
-            rawRequest.close();
-            System.out.println("end of processing");
+            System.out.println("reponse was sent.");
         }
         catch(Exception e){
-            System.out.println("Thread : IOException: " + e.getMessage());
+            System.out.println("Handler, IOException :" + e.getMessage());
         }
-        // read from the client:
-
     }
 
 }
