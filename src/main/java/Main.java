@@ -25,13 +25,12 @@ public class Main {
          // Wait for connection from client.
 
          clientSocket = serverSocket.accept();
-          rawRequest = clientSocket.getInputStream() ;
-          rawResponse = clientSocket.getOutputStream() ;
+         rawRequest = clientSocket.getInputStream() ;
+         rawResponse = clientSocket.getOutputStream() ;
          while(true){
              System.out.println("New Loop : ");
              handleRequest(rawRequest , rawResponse);
-             rawRequest.close();
-             rawResponse.close();
+             if(rawRequest == null) break ;
 //
 //             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //             byte[] length = rawRequest.readNBytes(4) ;
@@ -88,6 +87,8 @@ public class Main {
 //             out.flush() ;
              System.out.println("end of processing");
          }
+         rawRequest.close();
+         rawResponse.close();
      } catch (IOException e) {
        System.out.println("IOException: " + e.getMessage());
 
@@ -95,7 +96,6 @@ public class Main {
        try {
          if (clientSocket != null) {
            clientSocket.close();
-
          }
        } catch (IOException e) {
          System.out.println("IOException: " + e.getMessage());
