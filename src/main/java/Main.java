@@ -25,10 +25,10 @@ public class Main {
          // Wait for connection from client.
 
          clientSocket = serverSocket.accept();
+          rawRequest = clientSocket.getInputStream() ;
+          rawResponse = clientSocket.getOutputStream() ;
          while(true){
              System.out.println("New Loop : ");
-             rawRequest = clientSocket.getInputStream() ;
-             rawResponse = clientSocket.getOutputStream() ;
              handleRequest(rawRequest , rawResponse);
              rawRequest.close();
              rawResponse.close();
@@ -136,6 +136,7 @@ public class Main {
 
           byte[] res = new byte[buffer.remaining()] ;
           buffer.get(res) ;
+
           System.out.println("Sending out the response.");
           System.out.println("response's size : " + res.length);
           out.write(res.length);
