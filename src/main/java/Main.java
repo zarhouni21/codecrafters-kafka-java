@@ -26,6 +26,7 @@ public class Main {
 
          clientSocket = serverSocket.accept();
          while(true){
+             System.out.println("New Loop : ");
              rawRequest = clientSocket.getInputStream() ;
              rawResponse = clientSocket.getOutputStream() ;
              handleRequest(rawRequest , rawResponse);
