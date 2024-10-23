@@ -15,6 +15,7 @@ public class HandleClient extends Thread{
         this.in = in ; 
         this.out = out ;
         waitingList = new ArrayList<ByteBuffer>();
+        //
     }
 
     public List<ByteBuffer> getWaitingList() {
