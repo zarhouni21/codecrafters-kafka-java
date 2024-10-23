@@ -43,7 +43,6 @@ public class Main {
           int length = ByteBuffer.wrap(rawRequest.readNBytes(4)).getInt() ;
           System.out.println("the length of the request is : "+ length);
           var payload = rawRequest.readNBytes(length) ;
-          client.addToList(ByteBuffer.allocate(length).put(payload).rewind());
           System.out.println("Data is added");
       }
   }
@@ -109,7 +108,7 @@ public class Main {
           }
           System.out.println(" The C_ID version is " + cId);
           HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
-          handleClient.run(); 
+          handleClient.run();
 //          if (apiVersionDecoded <= -1 || apiVersionDecoded >= 5) {
 //              arr.write(new byte[]{0, 35});
 //              arr.write(2); // array size + 2
