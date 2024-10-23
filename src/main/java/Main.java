@@ -30,14 +30,14 @@ public class Main {
           InputStream in = client.getInputStream() ;
 
           HandleClient handleClient = new HandleClient(in , client.getOutputStream()) ;
-          List<ByteBuffer> requests = handleClient.getWaitingList() ;
-
-          handleClient.run();
-//          while(in!=null){
-////              if(!AcceptRequest(in , client.getOutputStream())) break ;
+//          List<ByteBuffer> requests = handleClient.getWaitingList() ;
 //
-//          }
-          createRequest(in , handleClient);
+//          handleClient.run();
+          while(in!=null){
+              if(!AcceptRequest(in , client.getOutputStream())) break ;
+
+          }
+//          createRequest(in , handleClient);
 //          createRequest(in , requests);
 //          for(ByteBuffer req : requests){
 //              process(client.getOutputStream() , req) ;
