@@ -33,11 +33,12 @@ public class Main {
           InputStream in = client.getInputStream() ;
           DataOutputStream out = new DataOutputStream(client.getOutputStream() );
           List<HandleClient> handlers = new ArrayList<HandleClient>() ;
-          while(client!=null){
+          while(in!=null){
               // create new Request Handler :
-              HandleClient handler = new HandleClient(in , out) ;
+              HandleClient handler = new HandleClient(in , client.getOutputStream()) ;
               handlers.add(handler) ;
-              handler.start(); 
+              handler.start();
+              in.close();
 //              AcceptRequest(in , client.getOutputStream()) ;
           }
       }
