@@ -33,10 +33,11 @@ public class Main {
           List<ByteBuffer> requests = handleClient.getWaitingList() ;
 
           handleClient.run();
-          while(in!=null){
-//              if(!AcceptRequest(in , client.getOutputStream())) break ;
-              createRequest(in , handleClient);
-          }
+//          while(in!=null){
+////              if(!AcceptRequest(in , client.getOutputStream())) break ;
+//
+//          }
+          createRequest(in , handleClient);
 //          createRequest(in , requests);
 //          for(ByteBuffer req : requests){
 //              process(client.getOutputStream() , req) ;
