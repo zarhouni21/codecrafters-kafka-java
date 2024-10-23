@@ -23,9 +23,8 @@ public class HandleClient extends Thread{
     @Override
     public void run() {
         System.out.println("============== NEW REQUEST!! ============");
-
         try{
-            while(waitingList.isEmpty()) wait(1000);
+            while(waitingList.isEmpty()) wait(2500);
             for (ByteBuffer req : waitingList){
                 process(out,req);
                 System.out.println("reponse was sent.");

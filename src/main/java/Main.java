@@ -31,7 +31,7 @@ public class Main {
 
           HandleClient handleClient = new HandleClient(in , client.getOutputStream() , new ArrayList<ByteBuffer>()) ;
           List<ByteBuffer> requests = handleClient.getWaitingList() ;
-
+          handleClient.run(); 
           while(in!=null){
 //              if(!AcceptRequest(in , client.getOutputStream())) break ;
               createRequest(in , requests);
@@ -43,7 +43,7 @@ public class Main {
           System.out.println("Client connection closed.");
       }
       catch(Exception e) {
-          System.out.println("Accepting connection failed :( : \n\t"+e.getMessage());
+          System.out.println("Connection Failed :( : \n\t"+e.getMessage());
       }
   }
   public static void createRequest(InputStream rawRequest, List<ByteBuffer> list) throws IOException{
