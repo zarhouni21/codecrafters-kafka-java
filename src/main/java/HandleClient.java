@@ -67,7 +67,7 @@ public class HandleClient extends Thread{
         System.out.println("reponse was sent.");
     }
 
-    private synchronized void process()  throws Exception{
+    private void process()  throws Exception{
         wait(2000);
         var arr = new ByteArrayOutputStream();
         arr.write(this.correlation_id);
