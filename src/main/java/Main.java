@@ -36,9 +36,8 @@ public class Main {
           while(in!=null){
               // create new Request Handler :
               HandleClient handler = new HandleClient(in , client.getOutputStream()) ;
-              handlers.add(handler) ;
+//              handlers.add(handler) ;
               handler.start();
-              in.close();
 //              AcceptRequest(in , client.getOutputStream()) ;
           }
       }
