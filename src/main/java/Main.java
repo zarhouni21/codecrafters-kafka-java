@@ -25,17 +25,19 @@ public class Main {
 
 
   public static void handleConnection(ServerSocket server){
-      try(Socket client = server.accept()){
-          System.out.println("new connection have been made.");
-          InputStream in = client.getInputStream() ;
+      while (true){
+          try(Socket client = server.accept()){
+              System.out.println("new connection have been made.");
+              InputStream in = client.getInputStream() ;
 
-          while(in!=null){
-              if(!AcceptRequest(client , in , client.getOutputStream())) break ;
+              while(in!=null){
+                  if(!AcceptRequest(client , in , client.getOutputStream())) break ;
+              }
+              System.out.println("Client connection closed.");
           }
-          System.out.println("Client connection closed.");
-      }
-      catch(Exception e) {
-          System.out.println("Connection Failed :( : \n\t"+e.getMessage());
+          catch(Exception e) {
+              System.out.println("Connection Failed :( : \n\t"+e.getMessage());
+          }
       }
   }
   public static void  createRequest(InputStream rawRequest, HandleClient client) throws IOException{
