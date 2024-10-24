@@ -97,10 +97,10 @@ public class Main {
                   ",\napiVersion : " + Arrays.toString(apiVersion) +
                   ",\nCorrelationId : " + Arrays.toString(correlation_id));
 
-//          HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
+          HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
 
 
-          HandleClient handleClient = new HandleClient(client) ;
+//          HandleClient handleClient = new HandleClient(client) ;
           handleClient.run();
 //
 //          var arr = new ByteArrayOutputStream();
