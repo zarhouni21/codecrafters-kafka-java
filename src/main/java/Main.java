@@ -30,7 +30,7 @@ public class Main {
           InputStream in = client.getInputStream() ;
 
           while(in!=null){
-              if(!AcceptRequest(in , client.getOutputStream())) break ;
+              if(!AcceptRequest(client , in , client.getOutputStream())) break ;
           }
           System.out.println("Client connection closed.");
       }
@@ -82,7 +82,7 @@ public class Main {
 
     ///============================
 
-  public static Boolean AcceptRequest(InputStream rawRequest, OutputStream rawResponse) {
+  public static Boolean AcceptRequest(Socket client , InputStream rawRequest, OutputStream rawResponse) {
       try {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           byte[] length = rawRequest.readNBytes(4);
@@ -95,7 +95,10 @@ public class Main {
                   ",\napiVersion : " + Arrays.toString(apiVersion) +
                   ",\nCorrelationId : " + Arrays.toString(correlation_id));
 
-          HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
+//          HandleClient handleClient = new HandleClient(rawRequest , rawResponse , apiVersion , correlation_id , apiKey) ;
+
+
+          HandleClient handleClient = new HandleClient(client) ;
           handleClient.run();
 //
 //          var arr = new ByteArrayOutputStream();

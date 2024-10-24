@@ -11,6 +11,7 @@ public class HandleClient extends Thread{
     byte[] apiVersion  ;
     byte[] correlation_id ;
     byte[] apiKey ;
+    Socket client ;
 
 
     public HandleClient(InputStream in , OutputStream out, byte[] apiVersion , byte[] correlation_id , byte[] key ){
@@ -21,12 +22,19 @@ public class HandleClient extends Thread{
         this.apiKey = key ;
     }
 
+    public HandleClient(Socket client){
+        this.client = client ;
+    }
     @Override
     public void run() {
         try{
-            process();
-        }
-        catch(Exception e){
+            if (client!=null){
+                processClient() ;
+            }
+            else {
+                process();
+            }
+        }catch(Exception e){
             System.out.println("Handler, IOException :" + e.getMessage());
         }
     }
@@ -107,6 +115,32 @@ public class HandleClient extends Thread{
         this.out.write(respSize);
         this.out.write(res);
         System.out.println("end of Thread.");
+    }
+
+    private void processClient() throws Exception{
+        InputStream in = client.getInputStream() ;
+        OutputStream out = client.getOutputStream() ;
+        byte[] buffer = new byte[1024] ;
+        int bytesReads ;
+        while( (bytesReads = in.read(buffer)) != -1 ){
+            System.out.println("======== Handling a new Response ===========");
+            byte[] length = in.readNBytes(4) ;
+            byte[] apiKey = in.readNBytes(2);
+            byte[] apiVersion = in.readNBytes(2);
+            byte[] correlation_id = in.readNBytes(4);
+
+            System.out.println("the raw request contains : \nMessageLength :" + Arrays.toString(length) +
+                    ",\napiKey : " + Arrays.toString(apiKey) +
+                    ",\napiVersion : " + Arrays.toString(apiVersion) +
+                    ",\nCorrelationId : " + Arrays.toString(correlation_id));
+
+            this.apiKey = apiKey ;
+            this.apiVersion = apiVersion ;
+            this.correlation_id = correlation_id ;
+
+            process();
+
+        }
     }
 
 }
