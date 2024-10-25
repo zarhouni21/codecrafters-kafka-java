@@ -21,7 +21,7 @@ public class Request {
             this.header.setCorrelationId(fromByteArrayToInt(rawRequest.readNBytes(4)));
 
         } catch (IOException e){
-            System.out.println("REQUEST Service : a problem occurred constructing the request : "+ e.toString());
+            System.out.println("REQUEST Service, error: a problem occurred constructing the request : "+ e.toString());
         }
     }
 

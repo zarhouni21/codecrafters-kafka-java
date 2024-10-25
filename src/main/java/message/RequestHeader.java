@@ -29,7 +29,7 @@ public class RequestHeader {
     public void setCorrelationId(int correlationId) {
         this.correlationId = correlationId;
     }
-//    private String client_id ; // is still not implemented ;
+    //private String client_id ; // is still not implemented ;
     //private byte _tagged_fields ; // additional metadata to requests or responses without changing the core structure of the protocol message
 
 

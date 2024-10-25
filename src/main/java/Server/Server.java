@@ -26,11 +26,11 @@ public class Server extends Thread {
     private void handleConnection(){
         try{
             Socket client = server.accept() ;
-            System.out.println("SERVER: new connection have been made : ===========================");
+            System.out.println("SERVER, message: new connection have been made : ===========================");
             while(client!=null){ // to handle multiple requests from the client
                 Request request = new Request() ;
                 request.readRequestFromStream(client.getInputStream());
-                System.out.println("NEW REQUEST : request's correlation Id is:" + request.getHeader().getCorrelationId());
+                System.out.println("SERVER, new request : request's correlation Id is:" + request.getHeader().getCorrelationId());
                 Response response = Response.fromRequest(request) ;
                 int responseLength = response.encodeResponse().length ;
                 client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
