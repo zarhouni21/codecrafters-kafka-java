@@ -34,7 +34,7 @@ public class Response {
                 .putInt(header.getCorrelationId())
                 .putShort(body.getError_code())
                 .put((byte) body.getArrayLength())
-                .putShort(body.apiKey)
+                .putShort((short)18)
                 .putShort(body.getMinVersion())
                 .putShort(body.getMaxVersion())
                 .put(body.getArray_tagged_fields())
