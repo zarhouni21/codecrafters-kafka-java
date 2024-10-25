@@ -39,7 +39,6 @@ public class Server extends Thread {
                     client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
                     client.getOutputStream().write(response.encodeResponse());
                     client.getOutputStream().flush();
-                    client.getInputStream().transferTo(client.getOutputStream());
                 }
             }catch (IOException e){
                 System.out.println("SERVER, error : " + e.toString());
