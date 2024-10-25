@@ -31,8 +31,6 @@ public class Server extends Thread {
                 Request request = new Request() ;
                 request.readRequestFromStream(client.getInputStream());
                 System.out.println("NEW REQUEST : request's correlation Id is:" + request.getHeader().getCorrelationId());
-
-
                 if(client!=null){ // Solving the java.net.SocketException: Broken pipe
                     Response response = Response.fromRequest(request) ;
                     int responseLength = response.encodeResponse().length ;
@@ -42,7 +40,7 @@ public class Server extends Thread {
                 }
             }
         }catch (IOException e){
-            System.out.println("SERVER, error : " + e.toString());
+            System.out.println("SERVER, error : " + e.getMessage());
         }
     }
 }

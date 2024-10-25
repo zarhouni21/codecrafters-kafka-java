@@ -21,11 +21,11 @@ public class Request {
             this.header.setCorrelationId(fromByteArrayToInt(rawRequest.readNBytes(4)));
 
         } catch (IOException e){
-            System.out.println(" Request Service : a problem occurred constructing the request : "+ e.toString());
+            System.out.println(" Request Service : a problem occurred constructing the request : "+ e.getMessage());
         }
     }
 
-
+    // TODO: Implement them from the PrimitiveOperation class, *later. 
     public Short fromByteArrayToShort(byte[] input){
         return (short) ((input[0]<<8) | (input[1]&0xFF)) ;
     }
