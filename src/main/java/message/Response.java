@@ -43,7 +43,7 @@ public class Response {
                 .flip() ;
 
         byte[] resp = new byte[buffer.remaining()] ;
-        buffer.get(buffer.remaining(),resp) ;
+        buffer.get(resp) ;
 
         return resp ;
     }
