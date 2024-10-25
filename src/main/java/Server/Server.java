@@ -31,11 +31,15 @@ public class Server extends Thread {
                 Request request = new Request() ;
                 request.readRequestFromStream(client.getInputStream());
                 System.out.println("NEW REQUEST : request's correlation Id is:" + request.getHeader().getCorrelationId());
-                Response response = Response.fromRequest(request) ;
-                int responseLength = response.encodeResponse().length ;
-                client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
-                client.getOutputStream().write(response.encodeResponse());
-                client.getOutputStream().flush();
+
+
+                if(client!=null){ // Solving the java.net.SocketException: Broken pipe
+                    Response response = Response.fromRequest(request) ;
+                    int responseLength = response.encodeResponse().length ;
+                    client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
+                    client.getOutputStream().write(response.encodeResponse());
+                    client.getOutputStream().flush();
+                }
             }
         }catch (IOException e){
             System.out.println("SERVER, error : " + e.toString());
