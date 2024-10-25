@@ -22,6 +22,10 @@ public class Server extends Thread {
         handleConnection();
     }
 
+    private void handleClient(){
+
+    }
+
     private void handleConnection(){
         while(true){
             try{
@@ -34,6 +38,7 @@ public class Server extends Thread {
                     int responseLength = response.encodeResponse().length ;
                     client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
                     client.getOutputStream().write(response.encodeResponse());
+                    client.getOutputStream().flush();
                 }
             }catch (IOException e){
                 System.out.println("SERVER, error : " + e.toString());
