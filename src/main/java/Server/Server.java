@@ -28,7 +28,6 @@ public class Server extends Thread {
             Socket client = server.accept() ;
             System.out.println("SERVER: new connection have been made : ===========================");
             while(client!=null){ // to handle multiple requests from the client
-                if(client.getInputStream().available()!=0){
                     Request request = new Request() ;
                     request.readRequestFromStream(client.getInputStream());
                     System.out.println("NEW REQUEST : request's correlation Id is:" + request.getHeader().getCorrelationId());
@@ -37,7 +36,6 @@ public class Server extends Thread {
                     client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
                     client.getOutputStream().write(response.encodeResponse());
                     client.getOutputStream().flush();
-                }
             }
         }catch (IOException e){
             System.out.println("SERVER, error : " + e.toString());
