@@ -20,8 +20,8 @@ public class Response {
         else{
             output.getBody().setError_code((short)0);
         }
-        output.getBody().setApiKey(req.getHeader().getApiVersion());
-        output.getBody().setArrayLength(2);
+        output.getBody().setArrayLength(2); // TODO: logic of all what follows this, except the outer_tagged_fields, should be changed to handle an array of apiKeys instead just one *low priority for now.
+        output.getBody().setApiKey((short) 18);
         output.getBody().setMinVersion((short)3);
         output.getBody().setMaxVersion((short)4);
         output.getBody().setArray_tagged_fields((byte)0);
@@ -36,7 +36,7 @@ public class Response {
                 .putInt(header.getCorrelationId())
                 .putShort(body.getError_code())
                 .put((byte) body.getArrayLength())
-                .putShort((short)18)
+                .putShort(body.getApiKey())
                 .putShort(body.getMinVersion())
                 .putShort(body.getMaxVersion())
                 .put(body.getArray_tagged_fields())

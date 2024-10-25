@@ -3,6 +3,7 @@ package message;
 import java.nio.ByteBuffer;
 
 public class PrimitiveOperations {
+    // TODO: This should be used in the response
     public Short fromByteArrayToShort(byte[] input){
         return (short) ((input[0]<<8) | (input[1]&0xFF)) ;
     }
