@@ -17,7 +17,9 @@ public class Response {
         if(req.getHeader().getApikey()<0 ||req.getHeader().getApikey()>4) {
             output.getBody().setError_code( (short) 35 );
         }
-        output.getBody().setError_code((short)0);
+        else{
+            output.getBody().setError_code((short)0);
+        }
         output.getBody().setApiKey(req.getHeader().getApiVersion());
         output.getBody().setArrayLength(2);
         output.getBody().setMinVersion((short)3);
