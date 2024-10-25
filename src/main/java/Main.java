@@ -1,4 +1,6 @@
 
+import Server.Server;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,19 +11,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
+
+    public static ArrayList<byte[]> requests ;
   public static void main(String[] args){
     System.err.println("Logs from your program will appear here!");
-     ServerSocket serverSocket = null;
-     int port = 9092;
-     try{
-         serverSocket = new ServerSocket(port) ;
-         serverSocket.setReuseAddress(true);
-         handleConnection(serverSocket);
-     } catch(Exception e){
-         throw new RuntimeException( );
+//     ServerSocket serverSocket = null;
+//     int port = 9092;
+//     try{
+//         serverSocket = new ServerSocket(port) ;
+//         serverSocket.setReuseAddress(true);
+//         handleConnection(serverSocket);
+//     } catch(Exception e){
+//         throw new RuntimeException( );
+//      }
+      try{
+          Server server = new Server() ;
+          server.run();
+      } catch (IOException e){
+          System.out.println("Main, couldn't start the server : "+e.toString());
       }
-     }
 
+     }
 
 
   public static void handleConnection(ServerSocket server){
