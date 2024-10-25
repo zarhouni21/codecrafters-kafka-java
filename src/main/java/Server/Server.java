@@ -27,20 +27,18 @@ public class Server extends Thread {
         try{
             Socket client = server.accept() ;
             System.out.println("SERVER: new connection have been made : ===========================");
-            while(client.getInputStream()!=null){ // to handle multiple requests from the client
+            while(client!=null && client.getInputStream()!=null){ // to handle multiple requests from the client
                 Request request = new Request() ;
                 request.readRequestFromStream(client.getInputStream());
                 System.out.println("NEW REQUEST : request's correlation Id is:" + request.getHeader().getCorrelationId());
-                if(client!=null){ // Solving the java.net.SocketException: Broken pipe
-                    Response response = Response.fromRequest(request) ;
-                    int responseLength = response.encodeResponse().length ;
-                    client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
-                    client.getOutputStream().write(response.encodeResponse());
-                    client.getOutputStream().flush();
-                }
+                Response response = Response.fromRequest(request) ;
+                int responseLength = response.encodeResponse().length ;
+                client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
+                client.getOutputStream().write(response.encodeResponse());
+                client.getOutputStream().flush();
             }
         }catch (IOException e){
-            System.out.println("SERVER, error : " + e.getMessage());
+            System.out.println("SERVER, error : " + e.toString());
         }
     }
 }
