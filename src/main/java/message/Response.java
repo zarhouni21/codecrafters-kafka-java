@@ -14,7 +14,7 @@ public class Response {
     public static Response fromRequest(Request req){
         Response output = new Response() ;
         output.getHeader().setCorrelationId(req.getHeader().getCorrelationId());
-        if(req.getHeader().getApikey()<0 ||req.getHeader().getApikey()>4) {
+        if(req.getHeader().getApiVersion()<=-1 ||req.getHeader().getApiVersion()>=5) {
             output.getBody().setError_code( (short) 35 );
         }
         else{

@@ -57,7 +57,8 @@ public class Server extends Thread {
     public synchronized void push(Request r){
         if(r!=null){
             requests.add(r);
-            System.out.println("request's correlation is :" + r.getHeader().getCorrelationId());
+            System.out.println("NEW REQUEST : request's correlation is :" + r.getHeader().getCorrelationId());
+            System.out.println("NEW REQUEST : request's API KEY is :" + r.getHeader().getApiVersion());
         }
         else{
             System.out.println("apparently there is a header that is being empty that have been made??");
