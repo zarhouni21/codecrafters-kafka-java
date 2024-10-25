@@ -12,7 +12,7 @@ public class Main {
           Server server = new Server() ;
           server.run();
       } catch (IOException e){
-          System.out.println("Main, couldn't start the server : "+e.toString());
+          System.out.println("MAIN, couldn't start the server : "+e.toString());
       }
 
      }
