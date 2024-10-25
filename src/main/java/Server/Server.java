@@ -30,23 +30,21 @@ public class Server extends Thread {
     }
 
     private void handleConnection(){
-        while(true){
-            try{
-                Socket client = server.accept() ;
-                System.out.println("SERVER: new connection have been made : ===========================");
-                while(client.getInputStream()!=null){
-                    Request request = new Request() ;
-                    request.readRequestFromStream(client.getInputStream());
-                    push(request);
-                    Response response = Response.fromRequest(request) ;
-                    int responseLength = response.encodeResponse().length ;
-                    client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
-                    client.getOutputStream().write(response.encodeResponse());
-                    client.getOutputStream().flush();
-                }
-            }catch (IOException e){
-                System.out.println("SERVER, error : " + e.toString());
+        try{
+            Socket client = server.accept() ;
+            System.out.println("SERVER: new connection have been made : ===========================");
+            while(client.getInputStream()!=null){ // to handle multiple requests from the
+                Request request = new Request() ;
+                request.readRequestFromStream(client.getInputStream());
+                push(request);
+                Response response = Response.fromRequest(request) ;
+                int responseLength = response.encodeResponse().length ;
+                client.getOutputStream().write(PrimitiveOperations.fromIntToByteArray(responseLength));
+                client.getOutputStream().write(response.encodeResponse());
+                client.getOutputStream().flush();
             }
+        }catch (IOException e){
+            System.out.println("SERVER, error : " + e.toString());
         }
     }
 
