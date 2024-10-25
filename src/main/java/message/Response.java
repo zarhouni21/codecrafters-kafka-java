@@ -6,6 +6,11 @@ public class Response {
     private ResponseHeader header ;
     private ResponseBody body ;
 
+    public Response() {
+        this.header = new ResponseHeader();
+        this.body = new ResponseBody();
+    }
+
     public static Response fromRequest(Request req){
         Response output = new Response() ;
         output.getHeader().setCorrelationId(req.getHeader().getCorrelationId());
